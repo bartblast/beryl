@@ -8,7 +8,7 @@ class VirtualDOM
     add_event_listeners(element, dom)
     set_attributes(element, dom)
 
-    childElements = element[:props][:children] || [];
+    childElements = element[:children] || [];
     childElements.each { |child| render(child, dom) }
     parentDom.appendChild(dom)
   end
@@ -28,7 +28,7 @@ class VirtualDOM
   end
 
   def set_attributes(element, dom)
-    attribute_props = element[:props].reject { |key, _value| listener?(key) || key == 'children' }
+    attribute_props = element[:props].reject { |key, _value| listener?(key) }
     attribute_props.each { |key, value| dom[key] = value }
   end
 end
