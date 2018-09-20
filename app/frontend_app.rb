@@ -12,7 +12,14 @@ element = {
     children: [
       { type: 'input', props: { value: 'foo', type: 'text' } },
       { type: 'a', props: { href: '/bar' } },
-      { type: 'span', props: {} }
+      {
+        type: 'span',
+        props: {
+          children: [
+            { type: 'text', props: { nodeValue: 'Foo' } }
+          ]
+        }
+      }
     ]
   }
 }

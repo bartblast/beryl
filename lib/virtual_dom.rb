@@ -3,7 +3,7 @@ require 'native'
 class VirtualDOM
   def render(element, parentDom)
     document = Native(`window.document`)
-    dom = document.createElement(element[:type])
+    dom = element[:type] == 'text' ? document.createTextNode('') : document.createElement(element[:type])
 
     add_event_listeners(element, dom)
     set_attributes(element, dom)
