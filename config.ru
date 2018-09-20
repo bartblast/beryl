@@ -1,9 +1,5 @@
-require 'opal'
 require 'rack'
+require_relative 'lib/app'
 
-
-app = Proc.new do |_env|
-  ['200', { 'Content-Type' => 'text/html' }, [html]]
-end
-
-Rack::Handler::WEBrick.run app
+use Rack::Static, :urls => ['/build']
+run App.new
