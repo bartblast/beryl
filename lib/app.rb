@@ -6,7 +6,7 @@ class App
         <script src='build/app.js'></script>
       </head>
       <body>
-        WELCOME!
+        <div id="root"></div>
       </body>
     </html>
   HEREDOC
