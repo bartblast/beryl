@@ -1,5 +1,6 @@
 require 'opal'
 require 'native'
+require 'event_loop'
 require 'serializer'
 require 'virtual_dom'
 
@@ -13,8 +14,8 @@ def input(props = {}, &children)
   node('input', props, children ? children.call : [])
 end
 
-def link(props = {}, &children)
-  node('a', props, children ? children.call : [])
+def link(text, props = {}, &children)
+  node('a', props, [text(text)])
 end
 
 def node(type, props = {}, children)
@@ -40,10 +41,10 @@ end
 def element(i)
   div(id: 'container') {[
     input(value: 'foo', type: 'text'),
-    link(href: '/bar'),
     span() {[
-      text('Foo' + i.to_s)
-    ]}
+      text(' Foo ' + i.to_s + ' ')
+    ]},
+    link('Button', onClick: [:ButtonClicked, key_1: 1, key_2: 2])
   ]}
 end
 
@@ -59,13 +60,15 @@ end
 
 onload do
   document = Native(`window.document`)
-
   parentDom = document.getElementById('root')
-  i = 0
 
-  @interval = Interval.new 1 do
-    i += 1
-    VirtualDOM.new.render(element(i), parentDom)
-  end
+  event_loop = EventLoop.new(parentDom, 0)
+  event_loop.process
+  event_loop.render
 
+  # i = 0
+  # @interval = Interval.new 1 do
+  #   i += 1
+  #   VirtualDOM.new.render(event_loop, element(i), parentDom)
+  # end
 end
