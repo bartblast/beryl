@@ -61,14 +61,6 @@ end
 onload do
   document = Native(`window.document`)
   parentDom = document.getElementById('root')
-
   event_loop = EventLoop.new(parentDom, 0)
   event_loop.process
-  event_loop.render
-
-  # i = 0
-  # @interval = Interval.new 1 do
-  #   i += 1
-  #   VirtualDOM.new.render(event_loop, element(i), parentDom)
-  # end
 end
