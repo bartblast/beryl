@@ -1,5 +1,6 @@
 require 'opal'
 require 'rake/testtask'
+require 'bowser'
 
 desc 'Build the app to build/app.js'
 task :build do

@@ -2,6 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.0)
+    bowser (1.0.4)
+      opal (>= 0.7.0, < 0.12.0)
     hike (1.2.3)
     opal (0.11.3)
       ast (>= 2.3.0)
@@ -18,6 +20,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bowser!
   opal!
   puma!
   rack!

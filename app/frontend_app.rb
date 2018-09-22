@@ -38,13 +38,17 @@ def onload(&block)
   `window.onload = block;`
 end
 
-def element(i)
+def element(state)
   div(id: 'container') {[
     input(value: 'foo', type: 'text'),
     span() {[
-      text(' Foo ' + i.to_s + ' ')
+      text(' Foo ' + state[:counter].to_s + ' ')
     ]},
-    link('Button', onClick: [:ButtonClicked, key_1: 1, key_2: 2])
+    link(' Increment ', onClick: [:IncrementClicked, key_1: 1, key_2: 2]),
+    link(' Load ', onClick: [:LoadClicked, key_1: 1, key_2: 2]),
+    div {[
+      text(state[:content])
+    ]}
   ]}
 end
 
@@ -61,6 +65,9 @@ end
 onload do
   document = Native(`window.document`)
   parentDom = document.getElementById('root')
-  event_loop = EventLoop.new(parentDom, 0)
+
+  state = { counter: 0, content: 'here we will load something' }
+  event_loop = EventLoop.new(parentDom, state)
   event_loop.process
+  event_loop.render
 end
