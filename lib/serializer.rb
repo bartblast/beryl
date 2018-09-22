@@ -1,6 +1,8 @@
 require 'json'
 
-class Serializer
+module Serializer
+  extend self
+
   def serialize(obj, json = true)
     result = obj.is_a?(Array) ? array(obj) : composite(obj)
     json ? result.to_json : result
@@ -23,7 +25,7 @@ class Serializer
   end
 
   def value(obj)
-    return obj.to_s if [Float, Integer, Number, String, Symbol].include?(obj.class)
+    return obj.to_s if %w(Float Integer Number String Symbol).include?(obj.class.to_s)
     properties(obj)
   end
 end
