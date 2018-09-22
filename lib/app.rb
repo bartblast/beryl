@@ -1,3 +1,7 @@
+require 'json'
+require_relative 'command_handler'
+require_relative 'serializer'
+
 class App
   HTML = <<~HEREDOC
     <!DOCTYPE html>
@@ -11,7 +15,19 @@ class App
     </html>
   HEREDOC
 
-  def call (_env)
-    [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [HTML]]
+  def call (env)
+    req = Rack::Request.new(env)
+    case req.path_info
+    when '/rock/command'
+      [200, { 'Content-Type' => 'application/json; charset=utf-8' }, [run_command(req)]]
+    else
+      [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [HTML]]
+    end
+  end
+
+  def run_command(req)
+    json = JSON.parse(req.body.read)
+    result = CommandHandler.new.handle(json['type'].to_sym, json['payload'])
+    Serializer.serialize(result)
   end
 end

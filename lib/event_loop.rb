@@ -1,6 +1,7 @@
 require 'virtual_dom'
 require 'task'
 require 'bowser/http'
+require 'serializer'
 
 class EventLoop
   def initialize(root, state)
@@ -32,9 +33,9 @@ class EventLoop
   def run_command(type, payload)
     puts 'running command'
     Task.new do
-      Bowser::HTTP.fetch('http://www.reddit.com/r/cats/top.json')
+      Bowser::HTTP.fetch('/rock/command', method: :post, data: { type: type, payload: Serializer.serialize(payload) })
         .then(&:json) # JSONify the response
-        .then { |response| puts response.json }
+        .then { |response| puts response }
         .catch { |exception| warn exception.message }
     end
   end
