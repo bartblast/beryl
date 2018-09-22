@@ -27,6 +27,12 @@ class SerializerTest < Minitest::Test
     assert Serializer.serialize([obj_1, obj_2]) == expected
   end
 
+  def test_array_of_symbol_and_hash
+    obj = [:symbol, key_1: 1, key_2: 2]
+    expected = '[{"class":"Symbol","value":"symbol"},{"class":"Hash","value":{"key_1":{"class":"Integer","value":"1"},"key_2":{"class":"Integer","value":"2"}}}]'
+    assert Serializer.serialize(obj) == expected
+  end
+
   def test_composite_object
     obj = TestClass1.new
     obj.a = 1
