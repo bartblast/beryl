@@ -33,20 +33,39 @@ def text(value, props = {}, &children)
   node('text', props.merge(nodeValue: value), children ? children.call : [])
 end
 
-element = div(id: 'container') {[
-  input(value: 'foo', type: 'text'),
-  link(href: '/bar'),
-  span() {[
-    text('Foo')
-  ]}
-]}
-
 def onload(&block)
   `window.onload = block;`
 end
 
+def element(i)
+  div(id: 'container') {[
+    input(value: 'foo', type: 'text'),
+    link(href: '/bar'),
+    span() {[
+      text('Foo' + i.to_s)
+    ]}
+  ]}
+end
+
+class Interval
+  def initialize(time = 0, &block)
+    @interval = `setInterval(function(){#{block.call}}, time)`
+  end
+
+  def stop
+    `clearInterval(#@interval)`
+  end
+end
+
 onload do
   document = Native(`window.document`)
+
   parentDom = document.getElementById('root')
-  VirtualDOM.new.render(element, parentDom)
+  i = 0
+
+  @interval = Interval.new 1 do
+    i += 1
+    VirtualDOM.new.render(element(i), parentDom)
+  end
+
 end

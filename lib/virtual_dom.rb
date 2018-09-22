@@ -10,7 +10,8 @@ class VirtualDOM
 
     childElements = element[:children] || [];
     childElements.each { |child| render(child, dom) }
-    parentDom.appendChild(dom)
+
+    replace_children(parentDom, dom)
   end
 
   private
@@ -25,6 +26,13 @@ class VirtualDOM
 
   def listener?(key)
     key.start_with?('on')
+  end
+
+  def replace_children(parent_dom, dom)
+    while (parent_dom.firstChild) do
+      parent_dom.removeChild(parent_dom.firstChild)
+    end
+    parent_dom.appendChild(dom)
   end
 
   def set_attributes(element, dom)
