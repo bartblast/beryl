@@ -5,6 +5,7 @@ desc 'Build the app to build/app.js'
 task :build do
   Opal.append_path 'app'
   Opal.append_path 'lib'
+  Dir.mkdir('build') unless File.exist?('build')
   File.binwrite 'build/app.js', Opal::Builder.build('frontend_app').to_s
 end
 

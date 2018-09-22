@@ -3,7 +3,6 @@ GEM
   specs:
     ast (2.4.0)
     hike (1.2.3)
-    oj (3.6.10)
     opal (0.11.3)
       ast (>= 2.3.0)
       hike (~> 1.2)
@@ -19,7 +18,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  oj!
   opal!
   puma!
   rack!
