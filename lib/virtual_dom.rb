@@ -1,7 +1,7 @@
 require 'native'
 
 class VirtualDOM
-  def render(element, parentDom)
+  def render(element, parentDom, replace = true)
     document = Native(`window.document`)
     dom = element[:type] == 'text' ? document.createTextNode('') : document.createElement(element[:type])
 
@@ -9,9 +9,9 @@ class VirtualDOM
     set_attributes(element, dom)
 
     childElements = element[:children] || [];
-    childElements.each { |child| render(child, dom) }
+    childElements.each { |child| render(child, dom, false) }
 
-    replace_children(parentDom, dom)
+    update_dom(parentDom, dom, replace)
   end
 
   private
@@ -28,15 +28,17 @@ class VirtualDOM
     key.start_with?('on')
   end
 
-  def replace_children(parent_dom, dom)
-    while (parent_dom.firstChild) do
-      parent_dom.removeChild(parent_dom.firstChild)
-    end
-    parent_dom.appendChild(dom)
-  end
-
   def set_attributes(element, dom)
     attribute_props = element[:props].reject { |key, _value| listener?(key) }
     attribute_props.each { |key, value| dom[key] = value }
+  end
+
+  def update_dom(parent_dom, dom, replace)
+    if replace
+      while (parent_dom.firstChild) do
+        parent_dom.removeChild(parent_dom.firstChild)
+      end
+    end
+    parent_dom.appendChild(dom)
   end
 end
