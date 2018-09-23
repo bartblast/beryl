@@ -1,6 +1,7 @@
 require 'opal'
 require 'rake/testtask'
 require 'bowser'
+require 'bundler/gem_tasks'
 
 desc 'Build the app to build/app.js'
 task :build do
@@ -22,3 +23,5 @@ Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
   t.test_files = FileList['test/**/*_test.rb']
 end
+
+task :default => :test

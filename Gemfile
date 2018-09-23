@@ -1,6 +1,6 @@
-source 'https://rubygems.org' do
-  gem 'bowser'
-  gem 'opal'
-  gem 'puma'
-  gem 'rack'
-end
+source "https://rubygems.org"
+
+git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+
+# Specify your gem's dependencies in beryl.gemspec
+gemspec
