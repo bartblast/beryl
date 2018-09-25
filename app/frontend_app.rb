@@ -2,9 +2,16 @@ require 'opal'
 require 'native'
 require 'event_loop'
 require 'serializer'
-require 'virtual_dom'
+require 'renderer'
+require 'beryl/widget'
 
 puts 'Wow, running opal!'
+
+class LogInPage < Beryl::Widget
+
+end
+
+p = LogInPage.new
 
 def div(props = {}, &children)
   node('div', props, children ? children.call : [])

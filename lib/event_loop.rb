@@ -1,4 +1,4 @@
-require 'virtual_dom'
+require 'renderer'
 require 'task'
 require 'bowser/http'
 require 'serializer'
@@ -17,7 +17,7 @@ class EventLoop
 
   def render
     puts element(@state).inspect
-    VirtualDOM.new.render(self, element(@state), @root)
+    Renderer.new.render(self, element(@state), @root)
   end
 
   def process

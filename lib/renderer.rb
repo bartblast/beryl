@@ -1,7 +1,7 @@
 require 'native'
 require 'event_loop'
 
-class VirtualDOM
+class Renderer
   def render(event_loop, element, parentDom, replace = true)
     document = Native(`window.document`)
     dom = element[:type] == 'text' ? document.createTextNode('') : document.createElement(element[:type])
