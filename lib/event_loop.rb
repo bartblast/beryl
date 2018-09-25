@@ -16,6 +16,7 @@ class EventLoop
   end
 
   def render
+    puts element(@state).inspect
     VirtualDOM.new.render(self, element(@state), @root)
   end
 
