@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    beryl (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -5,6 +10,7 @@ GEM
     bowser (1.0.4)
       opal (>= 0.7.0, < 0.12.0)
     hike (1.2.3)
+    minitest (5.11.3)
     opal (0.11.3)
       ast (>= 2.3.0)
       hike (~> 1.2)
@@ -14,16 +20,21 @@ GEM
       ast (~> 2.2)
     puma (3.12.0)
     rack (2.0.5)
+    rake (10.5.0)
     sourcemap (0.1.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bowser!
-  opal!
-  puma!
-  rack!
+  beryl!
+  bowser
+  bundler (~> 1.16)
+  minitest (~> 5.0)
+  opal
+  puma
+  rack
+  rake (~> 10.0)
 
 BUNDLED WITH
-   1.16.4
+   1.16.5
