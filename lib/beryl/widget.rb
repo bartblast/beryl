@@ -1,4 +1,4 @@
-require 'beryl/utils/constantizer'
+require 'beryl/utils'
 
 module Beryl
   class Widget
@@ -24,7 +24,7 @@ module Beryl
     end
 
     def method_missing(name, *args, &block)
-      constantized = Beryl::Utils::Constantizer.(name.to_s)
+      constantized = Beryl::Utils.constantize(name.to_s)
       child = args.any? ? constantized.new.render(*args) : constantized.new.render
       raise SyntaxError.new("Widget #{name} should return only one element (use row or column)") if child.is_a?(Array) && child.size > 1
       @children += child
