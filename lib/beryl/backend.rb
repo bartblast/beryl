@@ -1,5 +1,5 @@
-require 'json'
 require 'command_handler'
+require 'json'
 require 'serializer'
 
 module Beryl

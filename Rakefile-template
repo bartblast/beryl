@@ -1,0 +1,5 @@
+require 'beryl'
+
+spec = Gem::Specification.find_by_name 'beryl'
+rakefile = "#{spec.gem_dir}/lib/beryl/Rakefile"
+load rakefile
