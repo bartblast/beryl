@@ -4,17 +4,17 @@ module Beryl
   module Deserializer
     extend self
 
-    def deserialize(value, json = false)
-      value = JSON.parse(value) unless json
-      case value['class']
+    def deserialize(item, json = false)
+      item = JSON.parse(item) unless json
+      case item['class']
       when 'Hash'
-        value['value'].each_with_object({}) do |(key, value), result|
+        item['value'].each_with_object({}) do |(key, value), result|
           result[key.to_sym] = deserialize(value, true)
         end
       when 'Integer'
-        value['value'].to_i
+        item['value'].to_i
       when 'String'
-        value['value']
+        item['value']
       end
     end
   end
