@@ -4,7 +4,7 @@ require 'serializer'
 
 module Beryl
   class Backend
-    HTML = <<~HEREDOC
+    RESPONSE = <<~HEREDOC
       <!DOCTYPE html>
       <html>
         <head>
@@ -16,17 +16,17 @@ module Beryl
       </html>
     HEREDOC
 
-    def call (env)
+    def call(env)
       req = Rack::Request.new(env)
       case req.path_info
-      when '/rock/command'
-        [200, { 'Content-Type' => 'application/json; charset=utf-8' }, [run_command(req)]]
+      when '/command'
+        [200, { 'Content-Type' => 'application/json; charset=utf-8' }, [handle_command(req)]]
       else
-        [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [HTML]]
+        [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [RESPONSE]]
       end
     end
 
-    def run_command(req)
+    def handle_command(req)
       json = JSON.parse(req.body.read)
       result = CommandHandler.new.handle(json['type'].to_sym, json['payload'])
       Serializer.serialize(result)

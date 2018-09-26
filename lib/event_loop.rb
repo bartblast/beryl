@@ -34,7 +34,7 @@ class EventLoop
   def run_command(type, payload)
     puts 'running command'
     Task.new do
-      Bowser::HTTP.fetch('/rock/command', method: :post, data: { type: type, payload: Serializer.serialize(payload) })
+      Bowser::HTTP.fetch('/command', method: :post, data: { type: type, payload: Serializer.serialize(payload) })
         .then(&:json) # JSONify the response
         .then { |response| puts response }
         .catch { |exception| warn exception.message }
