@@ -4,6 +4,7 @@ require 'event_loop'
 require 'serializer'
 require 'renderer'
 require 'beryl/deserializer'
+require 'beryl/utils'
 require 'beryl/widget'
 
 def div(props = {}, &children)
@@ -55,7 +56,8 @@ end
 onload do
   document = Native(`window.document`)
   root = document.getElementById('beryl')
-  state = Beryl::Deserializer.deserialize(root.getAttribute('data-beryl'))
+  data = root.getAttribute('data-beryl').gsub('&quot;', '"')
+  state = Beryl::Deserializer.deserialize(data)
   event_loop = EventLoop.new(root, state)
   event_loop.process
   event_loop.render

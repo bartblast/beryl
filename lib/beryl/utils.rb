@@ -32,5 +32,24 @@ module Beryl
         end
       end
     end
+
+    def deep_symbolize_keys(hash)
+      deep_transform_keys_in_object(hash) { |key| key.to_sym rescue key }
+    end
+
+    private
+
+    def deep_transform_keys_in_object(object, &block)
+      case object
+      when Hash
+        object.each_with_object({}) do |(key, value), result|
+          result[yield(key)] = deep_transform_keys_in_object(value, &block)
+        end
+      when Array
+        object.map {|e| deep_transform_keys_in_object(e, &block) }
+      else
+        object
+      end
+    end
   end
 end

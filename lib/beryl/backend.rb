@@ -23,7 +23,7 @@ module Beryl
     end
 
     def hydrate_state
-      Serializer.serialize(eval(File.read('app/state.rb'))).gsub('"', '\"')
+      Serializer.serialize(eval(File.read('app/state.rb'))).gsub('"', '&quot;')
     end
 
     def response
