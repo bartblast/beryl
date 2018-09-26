@@ -3,15 +3,8 @@ require 'native'
 require 'event_loop'
 require 'serializer'
 require 'renderer'
+require 'beryl/deserializer'
 require 'beryl/widget'
-
-puts 'Wow, running opal!'
-
-class LogInPage < Beryl::Widget
-
-end
-
-p = LogInPage.new
 
 def div(props = {}, &children)
   node('div', props, children ? children.call : [])
@@ -59,22 +52,11 @@ def element(state)
   ]}
 end
 
-class Interval
-  def initialize(time = 0, &block)
-    @interval = `setInterval(function(){#{block.call}}, time)`
-  end
-
-  def stop
-    `clearInterval(#@interval)`
-  end
-end
-
 onload do
   document = Native(`window.document`)
-  parentDom = document.getElementById('root')
-
-  state = { counter: 0, content: 'here we will load something' }
-  event_loop = EventLoop.new(parentDom, state)
+  root = document.getElementById('beryl')
+  state = Beryl::Deserializer.deserialize(root.getAttribute('data-beryl'))
+  event_loop = EventLoop.new(root, state)
   event_loop.process
   event_loop.render
 end

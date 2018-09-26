@@ -7,7 +7,7 @@ task :build do
   Opal.append_path 'app'
   Opal.append_path 'lib'
   Dir.mkdir('build') unless File.exist?('build')
-  File.binwrite 'build/app.js', Opal::Builder.build('frontend_app').to_s
+  File.binwrite 'build/app.js', Opal::Builder.build('beryl/frontend').to_s
 end
 
 desc 'Build and run the app'
