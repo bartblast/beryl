@@ -19,7 +19,6 @@ module Beryl
     def render
       @view.state = @state
       virtual_dom = VirtualDOM.new(@view.render)
-      puts "virtual dom #{virtual_dom.dom}"
       Renderer.new.render(self, virtual_dom.dom.first, @root)
     end
 
