@@ -1,9 +1,10 @@
 require 'bowser'
 require 'opal'
+require 'bundler/gem_tasks'
 require 'rake/testtask'
 
 desc 'Build the app to build/app.js'
-task :build do
+task :compile do
   Opal.append_path 'app'
   Opal.append_path 'lib'
   Dir.mkdir('build') unless File.exist?('build')
@@ -13,7 +14,7 @@ end
 
 desc 'Build and run the app'
 task :run do
-  Rake::Task['build'].invoke
+  Rake::Task['compile'].invoke
   sh 'bundle exec rackup --port 3000 --host 0.0.0.0'
 end
 
