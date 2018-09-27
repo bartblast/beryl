@@ -19,7 +19,8 @@ module Beryl
           props = { style: 'display: flex' }
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :text
-          dom << node('span', {}, [node('text', { nodeValue: element[:value] })])
+          props = { class: 'hc s e wc' }
+          dom << node('div', props, [node('text', { nodeValue: element[:value] })])
         end
       end
     end

@@ -31,7 +31,7 @@ class Renderer
 
   def set_attributes(element, dom)
     attributes = element[:props].reject { |key, _value| listener?(key) }
-    attributes.each { |key, value| dom[key] = value }
+    attributes.each { |key, value| key != :class ? dom[key] = value : dom.className = value }
   end
 
   def update_dom(parent_dom, dom, replace)

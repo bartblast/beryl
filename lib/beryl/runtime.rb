@@ -2,14 +2,14 @@ require 'renderer'
 require 'task'
 require 'bowser/http'
 require 'serializer'
-require 'beryl/view'
 
 module Beryl
   class Runtime
-    def initialize(root, state)
+    def initialize(root, state, view)
       @messages = []
       @root = root
       @state = state
+      @view = view
     end
 
     def push(message)
@@ -17,8 +17,10 @@ module Beryl
     end
 
     def render
-      view = Beryl::View.new(@state)
-      Renderer.new.render(self, view.get_virtual_dom, @root)
+      @view.state = @state
+      virtual_dom = VirtualDOM.new(@view.render)
+      puts "virtual dom #{virtual_dom.dom}"
+      Renderer.new.render(self, virtual_dom.dom.first, @root)
     end
 
     def process
@@ -48,12 +50,16 @@ module Beryl
 
     def transition(type, payload)
       case type
+
       when :IncrementClicked
         @state.merge(counter: @state[:counter] + 1)
+
       when :LoadClicked
         [@state, :FetchData, key_1: 1, key_2: 2]
+
       when :LoadSuccess
         @state.merge(content: payload[:data])
+
       end
     end
   end

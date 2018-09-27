@@ -1,8 +1,8 @@
+require 'beryl/virtual_dom'
+
 module Beryl
   class View
-    def initialize(state)
-      @state = state
-    end
+    attr_accessor :state
 
     def div(props = {}, &children)
       node('div', props, children ? children.call : [])
@@ -30,20 +30,6 @@ module Beryl
 
     def text(value, props = {}, &children)
       node('text', props.merge(nodeValue: value), children ? children.call : [])
-    end
-
-    def get_virtual_dom
-      div(id: 'container') {[
-        input(value: 'foo', type: 'text'),
-        span() {[
-          text(' Foo ' + @state[:counter].to_s + ' ')
-        ]},
-        link(' Increment ', onClick: [:IncrementClicked, key_1: 1, key_2: 2]),
-        link(' Load ', onClick: [:LoadClicked, key_1: 1, key_2: 2]),
-        div {[
-          text(@state[:content])
-        ]}
-      ]}
     end
   end
 end

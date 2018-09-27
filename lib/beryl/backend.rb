@@ -23,7 +23,7 @@ module Beryl
     end
 
     def hydrate_state
-      Serializer.serialize(eval(File.read('app/state.rb'))).gsub('"', '&quot;')
+      Serializer.serialize(eval(File.read('app/initial_state.rb'))).gsub('"', '&quot;')
     end
 
     def response
@@ -31,10 +31,11 @@ module Beryl
       <!DOCTYPE html>
       <html>
         <head>
-          <script src='build/app.js'></script>
+          <script src="build/app.js"></script>
+          <link rel="stylesheet" type="text/css" href="build/style.css">
         </head>
         <body>
-          <div id="beryl" data-beryl="#{hydrate_state}"></div>
+          <div id="beryl" data-beryl="#{hydrate_state}" class="bg-color-255-255-255-255 font-color-0-0-0-255 font-size-20 font-open-sanshelveticaverdanasans-serif s e ui s e"></div>
         </body>
       </html>
       HEREDOC
