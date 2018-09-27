@@ -13,13 +13,22 @@ module Beryl
       layout.each_with_object([]) do |element, dom|
         case element[:type]
         when :column
-          props = { style: 'display: flex' }
+          width = 'wc'
+          width = 'wf' if element[:props] && element[:props].include?(:fill_width)
+          klass = "hc s c #{width} ct cl"
+          props = { class: klass }
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :row
-          props = { style: 'display: flex' }
+          width = 'wc'
+          width = 'wf' if element[:props] && element[:props].include?(:fill_width)
+          klass = "hc s r #{width} cl ccy"
+          props = { class: klass }
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :text
-          props = { class: 'hc s e wc' }
+          width = 'wc'
+          width = 'wf' if element[:props] && element[:props].include?(:fill_width)
+          klass = "hc s e #{width}"
+          props = { class: klass }
           dom << node('div', props, [node('text', { nodeValue: element[:value] })])
         end
       end
