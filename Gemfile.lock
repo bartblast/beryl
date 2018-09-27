@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    beryl (0.2.2)
+    beryl (0.2.3)
       bowser
       opal
       puma
