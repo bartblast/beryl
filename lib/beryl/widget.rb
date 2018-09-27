@@ -38,7 +38,7 @@ module Beryl
       @children
     end
 
-    def text(string, props = nil)
+    def text(string, *props)
       @children << {
         type: :text,
         value: string,
