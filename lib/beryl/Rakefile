@@ -1,3 +1,4 @@
+require 'beryl'
 require 'bowser'
 require 'opal'
 require 'rake/testtask'
