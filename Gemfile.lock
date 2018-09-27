@@ -2,6 +2,10 @@ PATH
   remote: .
   specs:
     beryl (0.2.0)
+      bowser
+      opal
+      puma
+      rack
 
 GEM
   remote: https://rubygems.org/
@@ -28,12 +32,8 @@ PLATFORMS
 
 DEPENDENCIES
   beryl!
-  bowser
   bundler (~> 1.16)
   minitest (~> 5.0)
-  opal
-  puma
-  rack
   rake (~> 10.0)
 
 BUNDLED WITH
