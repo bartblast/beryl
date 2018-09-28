@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.0'
 
   spec.add_dependency 'bowser'
+  spec.add_dependency 'capybara'
   spec.add_dependency 'opal'
   spec.add_dependency 'puma'
   spec.add_dependency 'rack'
