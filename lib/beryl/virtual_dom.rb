@@ -84,7 +84,7 @@ module Beryl
       when :fill
         'wf'
       when :fixed
-        ''
+        'we'
       when :proportional
         'wfp'
       end
