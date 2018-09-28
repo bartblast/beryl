@@ -7,6 +7,7 @@ desc 'Build the app to build/app.js'
 task :compile do
   Opal.append_path 'app'
   Opal.append_path 'lib'
+  Opal.use_gem 'beryl'
   Dir.mkdir('build') unless File.exist?('build')
   File.binwrite 'build/app.js', Opal::Builder.build('frontend').to_s
   File.binwrite 'build/style.css', File.read("#{File.dirname(__FILE__)}/style.css")
