@@ -1,6 +1,7 @@
 require 'command_handler'
 require 'json'
 require 'serializer'
+require 'beryl/routing/router'
 
 module Beryl
   class Backend
@@ -10,7 +11,10 @@ module Beryl
       when '/command'
         [200, { 'Content-Type' => 'application/json; charset=utf-8' }, [handle_command(req)]]
       else
-        [200, { 'Content-Type' => 'text/html; charset=utf-8' }, [response]]
+        router = Beryl::Routing::Router.new
+        route = router.match(req.path_info)
+        code = (route[0] != :not_found ? 200 : 404)
+        [code, { 'Content-Type' => 'text/html; charset=utf-8' }, [response]]
       end
     end
 
