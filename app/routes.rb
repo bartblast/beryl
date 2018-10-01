@@ -1,5 +1,5 @@
 route '/', :homepage
 
-route '/blog/:uuid', :blog_details
+route '/page-x', :page_x
 
-route 'dupa/:abc', :dupa_page
+route 'dupa/:id', :dupa_page

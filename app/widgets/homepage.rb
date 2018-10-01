@@ -1,6 +1,6 @@
 require 'beryl/widget'
 
-class Something < Beryl::Widget
+class Homepage < Beryl::Widget
   def render(state)
     column :fill_width, :fill_height do
       row :fill_width do

@@ -21,7 +21,9 @@ module Beryl
       else
         router = Beryl::Routing::Router.new
         route = router.match(req.path_info)
-        @state[:route] = route
+        @state[:route] = route[0]
+        @state[:params] = route[1]
+        puts "STATE = #{@state}"
         code = (route[0] != :not_found ? 200 : 404)
         [code, { 'Content-Type' => 'text/html; charset=utf-8' }, [response]]
       end
@@ -36,7 +38,7 @@ module Beryl
     end
 
     def hydrate_state
-      Serializer.serialize(eval(File.read('app/initial_state.rb'))).gsub('"', '&quot;')
+      Serializer.serialize(@state).gsub('"', '&quot;')
     end
 
     def render

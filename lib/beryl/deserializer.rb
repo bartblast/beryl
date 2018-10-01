@@ -15,6 +15,8 @@ module Beryl
         item['value'].to_i
       when 'String'
         item['value']
+      when 'Symbol'
+        item['value'].to_sym
       end
     end
   end
