@@ -1,5 +1,5 @@
 require 'native'
-require 'beryl/runtime'
+require 'beryl/frontend_runtime'
 
 class Renderer
   def render(runtime, element, parentDom, replace = true)

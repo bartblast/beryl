@@ -23,7 +23,6 @@ module Beryl
         route = router.match(req.path_info)
         @state[:route] = route[0]
         @state[:params] = route[1]
-        puts "STATE = #{@state}"
         code = (route[0] != :not_found ? 200 : 404)
         [code, { 'Content-Type' => 'text/html; charset=utf-8' }, [response]]
       end
