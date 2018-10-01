@@ -9,6 +9,8 @@ module Beryl
   class Backend
     def initialize(view)
       @view = view
+      initial_state = eval(File.read('app/initial_state.rb'))
+      @state = initial_state.clone
     end
 
     def call(env)
@@ -19,6 +21,7 @@ module Beryl
       else
         router = Beryl::Routing::Router.new
         route = router.match(req.path_info)
+        @state[:route] = route
         code = (route[0] != :not_found ? 200 : 404)
         [code, { 'Content-Type' => 'text/html; charset=utf-8' }, [response]]
       end
@@ -37,8 +40,7 @@ module Beryl
     end
 
     def render
-      initial_state = eval(File.read('app/initial_state.rb'))
-      runtime = Beryl::BackendRuntime.new(initial_state, @view)
+      runtime = Beryl::BackendRuntime.new(@state, @view)
       runtime.process_all_messages
       @view.state = runtime.state
       virtual_dom = VirtualDOM.new(@view.render)
