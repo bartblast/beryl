@@ -1,7 +1,7 @@
 require 'opal'
 require 'native'
 require 'beryl/deserializer'
-require 'beryl/runtime'
+require 'beryl/frontend_runtime'
 
 module Beryl
   class Frontend
@@ -19,7 +19,7 @@ module Beryl
         root = document.getElementById('beryl')
         serialized_state = root.getAttribute('data-beryl').gsub('&quot;', '"')
         state = Beryl::Deserializer.deserialize(serialized_state)
-        Beryl::Runtime.new(root, state, @view).run
+        Beryl::FrontendRuntime.new(root, state, @view).run
       end
     end
   end

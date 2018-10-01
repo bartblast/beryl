@@ -2,9 +2,15 @@ require 'command_handler'
 require 'json'
 require 'serializer'
 require 'beryl/routing/router'
+require 'beryl/html_renderer'
+require 'beryl/backend_runtime'
 
 module Beryl
   class Backend
+    def initialize(view)
+      @view = view
+    end
+
     def call(env)
       req = Rack::Request.new(env)
       case req.path_info
@@ -30,6 +36,15 @@ module Beryl
       Serializer.serialize(eval(File.read('app/initial_state.rb'))).gsub('"', '&quot;')
     end
 
+    def render
+      initial_state = eval(File.read('app/initial_state.rb'))
+      runtime = Beryl::BackendRuntime.new(initial_state, @view)
+      runtime.process_all_messages
+      @view.state = runtime.state
+      virtual_dom = VirtualDOM.new(@view.render)
+      HTMLRenderer.new.render(virtual_dom.dom.first)
+    end
+
     def response
       <<~HEREDOC
       <!DOCTYPE html>
@@ -39,7 +54,7 @@ module Beryl
           <link rel="stylesheet" type="text/css" href="build/style.css">
         </head>
         <body>
-          <div id="beryl" data-beryl="#{hydrate_state}" class="bg-color-255-255-255-255 font-color-0-0-0-255 font-size-20 font-open-sanshelveticaverdanasans-serif s e ui s e"></div>
+          <div id="beryl" data-beryl="#{hydrate_state}" class="bg-color-255-255-255-255 font-color-0-0-0-255 font-size-20 font-open-sanshelveticaverdanasans-serif s e ui s e">#{render}</div>
         </body>
       </html>
       HEREDOC
