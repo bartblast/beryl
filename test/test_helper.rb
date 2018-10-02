@@ -4,4 +4,4 @@ require 'minitest/autorun'
 
 require 'beryl/backend'
 require 'capybara'
-Capybara.app = Beryl::Backend.new
+# Capybara.app = Beryl::Backend.new

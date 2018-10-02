@@ -62,7 +62,7 @@ module Beryl
       Task.new do
         Bowser::HTTP.fetch('/command', method: :post, data: { type: type, payload: Serializer.serialize(payload) })
           .then(&:json) # JSONify the response
-          .then { |response| puts response; @commands.delete(uuid) }
+          .then { |response| @commands.delete(uuid) }
           .catch { |exception| warn exception.message; @commands.delete(uuid)  }
       end
     end

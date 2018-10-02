@@ -4,19 +4,38 @@ module Beryl
   module Deserializer
     extend self
 
-    def deserialize(item, json = false)
-      item = JSON.parse(item) unless json
-      case item['class']
+    def deserialize(obj, json = true)
+      # puts "deserialize: #{obj}"
+      obj = JSON.parse(obj) if json
+      # puts 'after'
+      obj.is_a?(Array) ? array(obj) : item(obj)
+    end
+
+    private
+
+    def array(obj)
+      obj.each_with_object([]) { |item, result| result << deserialize(item, false) }
+    end
+
+    def item(obj)
+      # puts "object = #{obj.inspect}"
+      # puts "class = #{obj.class}"
+      case obj['class']
+      when 'Float'
+        obj['value'].to_f
       when 'Hash'
-        item['value'].each_with_object({}) do |(key, value), result|
-          result[key.to_sym] = deserialize(value, true)
+        obj['value'].each_with_object({}) do |(key, value), result|
+          # puts "item, key = #{key}, value = #{value}"
+          result[key.to_sym] = deserialize(value, false)
         end
       when 'Integer'
-        item['value'].to_i
+        obj['value'].to_i
       when 'String'
-        item['value']
+        obj['value']
       when 'Symbol'
-        item['value'].to_sym
+        obj['value'].to_sym
+      else
+
       end
     end
   end
