@@ -14,28 +14,27 @@ module Beryl
     def convert(layout)
       layout.each_with_object([]) do |element, dom|
         listeners = listeners(element[:props])
+        width = width(element[:props])
+        height = height(element[:props])
+        style = "#{width[:style]}#{height[:style]}"
         case element[:type]
+        when :button
+          klass = "#{height[:class]} s e #{width[:class]}"
+          props = { class: klass, style: style }
+          props.merge!(listeners)
+          dom << node('button', props, element[:children] ? convert(element[:children]) : [])
         when :column
-          width = width(element[:props])
-          height = height(element[:props])
           klass = "#{height[:class]} s c #{width[:class]} ct cl"
-          style = "#{width[:style]}#{height[:style]}"
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :row
-          width = width(element[:props])
-          height = height(element[:props])
           klass = "#{height[:class]} s r #{width[:class]} cl ccy"
-          style = "#{width[:style]}#{height[:style]}"
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :text
-          width = width(element[:props])
-          height = height(element[:props])
           klass = "#{height[:class]} s e #{width[:class]}"
-          style = "#{width[:style]}#{height[:style]}"
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('div', props, [node('text', { nodeValue: element[:value] })])

@@ -11,11 +11,17 @@ module Beryl
     def build(type, *args, &block)
       element = Widget.new
       element.instance_eval(&block)
+      raise SyntaxError.new("Button can have only 1 child element (use row or column)") if type == :button && element.children.size > 1
       {
         type: type,
         props: args,
         children: element.children
       }
+    end
+
+    def button(*args, &block)
+      @children << build(:button, *args, &block)
+      @children
     end
 
     def column(*args, &block)

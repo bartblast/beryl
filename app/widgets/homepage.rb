@@ -6,7 +6,12 @@ class Homepage < Beryl::Widget
     column :fill_width, :fill_height do
       row :fill_width do
         column proportional_width: 2 do
-          text 'ROW 1 COL 1 (click)', on_click: [:IncrementClicked, random: SecureRandom.uuid]
+          button on_click: [:IncrementClicked, random: SecureRandom.uuid] do
+            row do
+              text 'Click'
+              text ' me!'
+            end
+          end
         end
         column :fill_width do
           text "ROW 1 COL 2 (counter = #{state[:counter]})"
