@@ -1,14 +1,15 @@
 require 'beryl/widget'
+require 'securerandom'
 
 class Homepage < Beryl::Widget
   def render(state)
     column :fill_width, :fill_height do
       row :fill_width do
         column proportional_width: 2 do
-          text 'ROW 1 COL 1'
+          text 'ROW 1 COL 1 (click)', on_click: [:IncrementClicked, random: SecureRandom.uuid]
         end
         column :fill_width do
-          text 'ROW 1 COL 2'
+          text "ROW 1 COL 2 (counter = #{state[:counter]})"
         end
         column proportional_width: 2 do
           text 'ROW 1 COL 3'
@@ -19,7 +20,7 @@ class Homepage < Beryl::Widget
           text 'ROW 2 COL 1'
         end
         column :fill_width, height: 50 do
-          text 'ROW 2 COL 2'
+          text "ROW 2 COL 2 (random = #{state[:random]})"
         end
         column width: 300 do
           text 'ROW 2 COL 3'

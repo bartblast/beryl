@@ -1,3 +1,5 @@
+require 'beryl/utils'
+
 module Beryl
   class VirtualDOM
     attr_reader :dom
@@ -11,6 +13,7 @@ module Beryl
 
     def convert(layout)
       layout.each_with_object([]) do |element, dom|
+        listeners = listeners(element[:props])
         case element[:type]
         when :column
           width = width(element[:props])
@@ -18,6 +21,7 @@ module Beryl
           klass = "#{height[:class]} s c #{width[:class]} ct cl"
           style = "#{width[:style]}#{height[:style]}"
           props = { class: klass, style: style }
+          props.merge!(listeners)
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :row
           width = width(element[:props])
@@ -25,6 +29,7 @@ module Beryl
           klass = "#{height[:class]} s r #{width[:class]} cl ccy"
           style = "#{width[:style]}#{height[:style]}"
           props = { class: klass, style: style }
+          props.merge!(listeners)
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :text
           width = width(element[:props])
@@ -32,8 +37,17 @@ module Beryl
           klass = "#{height[:class]} s e #{width[:class]}"
           style = "#{width[:style]}#{height[:style]}"
           props = { class: klass, style: style }
+          props.merge!(listeners)
           dom << node('div', props, [node('text', { nodeValue: element[:value] })])
         end
+      end
+    end
+
+    def listeners(props)
+      hash_params = props.select { |prop| prop.is_a?(Hash) }.first
+      return {} unless hash_params
+      hash_params.select { |key, _value| key.to_s.start_with?('on')}.each_with_object({}) do |(key, value), result|
+        result[Beryl::Utils.camelize(key.to_s, false)] = value
       end
     end
 
