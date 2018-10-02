@@ -2,11 +2,12 @@ module Beryl
   class BackendRuntime
     attr_reader :state
 
-    def initialize(state, view)
+    def initialize(state, view, message_handler)
       @messages = []
       @state = state
       @view = view
       @commands = []
+      @message_handler = message_handler
     end
 
     def push(message)
@@ -16,7 +17,7 @@ module Beryl
     def process_all_messages
       while @messages.any?
         message = @messages.shift
-        result = transition(message.first, message.last)
+        result = @message_handler.handle(@state, message.first, message.last)
         @state = result.is_a?(Array) ? result.first : result
         command = result.is_a?(Array) ? result[1] : nil
         run_command(result[1], result[2]) if command
@@ -34,21 +35,6 @@ module Beryl
 
     def run_command(type, payload)
       puts 'running command'
-    end
-
-    def transition(type, payload)
-      case type
-
-      when :IncrementClicked
-        @state.merge(counter: @state[:counter] + 1)
-
-      when :LoadClicked
-        [@state, :FetchData, key_1: 1, key_2: 2]
-
-      when :LoadSuccess
-        @state.merge(content: payload[:data])
-
-      end
     end
   end
 end

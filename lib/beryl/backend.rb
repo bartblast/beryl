@@ -7,10 +7,11 @@ require 'beryl/backend_runtime'
 
 module Beryl
   class Backend
-    def initialize(view)
+    def initialize(view, message_handler)
       @view = view
       initial_state = eval(File.read('app/initial_state.rb'))
       @state = initial_state.clone
+      @message_handler = message_handler
     end
 
     def call(env)
@@ -41,7 +42,7 @@ module Beryl
     end
 
     def render
-      runtime = Beryl::BackendRuntime.new(@state, @view)
+      runtime = Beryl::BackendRuntime.new(@state, @view, @message_handler)
       runtime.process_all_messages
       @view.state = runtime.state
       virtual_dom = VirtualDOM.new(@view.render)
