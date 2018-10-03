@@ -16,7 +16,7 @@ module Beryl
         listeners = listeners(element[:props])
         width = width(element[:props])
         height = height(element[:props])
-        style = "#{width[:style]}#{height[:style]}"
+        style = "#{width[:style]}#{height[:style]}#{border_color(element[:props])}#{border_width(element[:props])}"
         case element[:type]
         when :button
           klass = "#{height[:class]} s e #{width[:class]}"
@@ -66,6 +66,21 @@ module Beryl
         class: width_class(type),
         style: width_style(props, type)
       }
+    end
+
+    def border_color(props)
+      props = [props] unless props.is_a?(Array)
+      hash = props.select { |p| p.is_a?(Hash) }.first
+      return '' unless hash
+      bc = hash[:border_color]
+      bc ? "border-color: rgb(#{bc[0]}, #{bc[1]}, #{bc[2]});" : ''
+    end
+
+    def border_width(props)
+      props = [props] unless props.is_a?(Array)
+      hash = props.select { |p| p.is_a?(Hash) }.first
+      return '' unless hash
+      hash[:border_width] ? "border-width: #{hash[:border_width]}px;" : ''
     end
 
     def width_type(props)

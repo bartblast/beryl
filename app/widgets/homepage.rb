@@ -17,7 +17,7 @@ class Homepage < Beryl::Widget
           text "ROW 1 COL 2 (counter = #{state[:counter]})"
         end
         column proportional_width: 2 do
-          text 'ROW 1 COL 3'
+          text 'ROW 1 COL 3', border_width: 2, border_color: [0, 255, 0]
         end
       end
       row :fill_width do
