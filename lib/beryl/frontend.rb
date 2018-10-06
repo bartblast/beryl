@@ -2,13 +2,14 @@ require 'opal'
 require 'native'
 require 'beryl/deserializer'
 require 'beryl/frontend_runtime'
+require 'beryl/port'
 
 module Beryl
-  class Frontend
-    def initialize(view, message_handler)
-      @view = view
-      @message_handler = message_handler
-    end
+  module Frontend
+    extend self
+
+    attr_accessor :view, :message_handler
+    attr_reader :runtime
 
     def onload(&block)
       `window.onload = block;`
@@ -20,7 +21,9 @@ module Beryl
         root = document.getElementById('beryl')
         serialized_state = root.getAttribute('data-beryl').gsub('&quot;', '"')
         state = Beryl::Deserializer.deserialize(serialized_state)
-        Beryl::FrontendRuntime.new(root, state, @view, @message_handler).run
+        @runtime = Beryl::FrontendRuntime.new(root, state, @view, @message_handler)
+        @runtime.run
+        @runtime
       end
     end
   end
