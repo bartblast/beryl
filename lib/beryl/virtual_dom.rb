@@ -16,25 +16,26 @@ module Beryl
         listeners = listeners(element[:props])
         width = width(element[:props])
         height = height(element[:props])
+        position_class = position_class(element[:props])
         style = "#{width[:style]}#{height[:style]}#{border_color(element[:props])}#{border_width(element[:props])}"
         case element[:type]
         when :button
-          klass = "#{height[:class]} s e #{width[:class]}"
+          klass = "#{height[:class]} s e #{width[:class]} #{position_class}"
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('button', props, element[:children] ? convert(element[:children]) : [])
         when :column
-          klass = "#{height[:class]} s c #{width[:class]} ct cl"
+          klass = "#{height[:class]} s c #{width[:class]} ct cl #{position_class}"
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :row
-          klass = "#{height[:class]} s r #{width[:class]} cl ccy"
+          klass = "#{height[:class]} s r #{width[:class]} cl ccy #{position_class}"
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         when :text
-          klass = "#{height[:class]} s e #{width[:class]}"
+          klass = "#{height[:class]} s e #{width[:class]} #{position_class}"
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('div', props, [node('text', { nodeValue: element[:value] })])
@@ -81,6 +82,13 @@ module Beryl
       hash = props.select { |p| p.is_a?(Hash) }.first
       return '' unless hash
       hash[:border_width] ? "border-width: #{hash[:border_width]}px;" : ''
+    end
+
+    def position_class(props)
+      puts props.inspect
+      props = [props] unless props.is_a?(Array)
+      return 'b' if props.any? { |p| p == :below }
+      nil
     end
 
     def width_type(props)

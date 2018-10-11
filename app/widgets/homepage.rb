@@ -19,6 +19,7 @@ class Homepage < Beryl::Widget
         column proportional_width: 2 do
           text 'ROW 1 COL 3', border_width: 2, border_color: [0, 255, 0]
         end
+        text 'some text below', :below
       end
       row :fill_width do
         column width: 200 do
