@@ -44,6 +44,21 @@ module Beryl
       @children
     end
 
+    def below(*args, &block)
+      @children << build(:below, *args, &block)
+      @children
+    end
+
+    def above(*args, &block)
+      @children << build(:above, *args, &block)
+      @children
+    end
+
+    def on_left(*args, &block)
+      @children << build(:on_left, *args, &block)
+      @children
+    end
+
     def text(string, *props)
       @children << {
         type: :text,

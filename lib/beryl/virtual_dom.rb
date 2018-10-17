@@ -17,7 +17,7 @@ module Beryl
         width = width(element[:props])
         height = height(element[:props])
         position_class = position_class(element[:props])
-        style = "#{width[:style]}#{height[:style]}#{border_color(element[:props])}#{border_width(element[:props])}"
+        style = "#{width[:style]}#{height[:style]}#{border_color(element[:props])}#{border_width(element[:props])}#{background(element[:props])}"
         case element[:type]
         when :button
           klass = "#{height[:class]} s e #{width[:class]} #{position_class}"
@@ -39,6 +39,21 @@ module Beryl
           props = { class: klass, style: style }
           props.merge!(listeners)
           dom << node('div', props, [node('text', { nodeValue: element[:value] })])
+        when :below
+          klass = "s e b"
+          props = { class: klass, style: style }
+          props.merge!(listeners)
+          dom << node('div', props, element[:children] ? convert(element[:children]) : [])
+        when :above
+          klass = "s e a"
+          props = { class: klass, style: style }
+          props.merge!(listeners)
+          dom << node('div', props, element[:children] ? convert(element[:children]) : [])
+        when :on_left
+          klass = "s e ol"
+          props = { class: klass, style: style }
+          props.merge!(listeners)
+          dom << node('div', props, element[:children] ? convert(element[:children]) : [])
         end
       end
     end
@@ -82,6 +97,14 @@ module Beryl
       hash = props.select { |p| p.is_a?(Hash) }.first
       return '' unless hash
       hash[:border_width] ? "border-width: #{hash[:border_width]}px;" : ''
+    end
+
+    def background(props)
+      props = [props] unless props.is_a?(Array)
+      hash = props.select { |p| p.is_a?(Hash) }.first
+      return '' unless hash
+      bg = hash[:background]
+      bg ? "background: rgb(#{bg[0]}, #{bg[1]}, #{bg[2]});" : ''
     end
 
     def position_class(props)
